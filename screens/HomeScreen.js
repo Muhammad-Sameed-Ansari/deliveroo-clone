@@ -1,18 +1,23 @@
-import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Image, TextInput, ScrollView } from 'react-native'
 import React from 'react'
-import { UserIcon, SearchIcon, AdjustmentsIcon, ChevronDownIcon } from 'react-native-heroicons/solid'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { images } from '../constants'
+import Categories from '../components/Categories';
+import FeaturedRow from '../components/FeaturedRow';
 
 const HomeScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
+
+            {/* Header */}
             <View style={styles.headerContainer}>
                 <Image 
                     style={styles.cornerLogo}
                     source={images.deliveroo_logo}
                 />
 
-                <View style={{ marginLeft: 8 }}>
+                <View style={{ marginLeft: 8, flex: 1 }}>
                     <Text 
                         style={{ 
                             fontWeight: '700', 
@@ -27,11 +32,56 @@ const HomeScreen = () => {
                             fontSize: 20,
                             lineHeight: 28
                         }}
-                    >Current Location
-                    <ChevronDownIcon />
+                    >Current Location<AntDesign name="down" size={20} color="#00CCBB" />
                     </Text>
                 </View>
+                <AntDesign name="user" size={35} color="#00CCBB" />
             </View>
+
+            {/* Search */}
+            <View style={styles.searchBarContainer}>
+                <View style={styles.searchBar}>
+                    <AntDesign name="search1" size={20} color="gray" />
+                    <TextInput 
+                        placeholder='  Restaurants and cuisines'
+                        keyboardType='default'
+                    />
+                </View>
+
+                <Entypo name="sound-mix" size={24} color="#00CCBB" />
+            </View>
+
+            {/* Body */}
+            <ScrollView 
+                contentContainerStyle={{
+                    paddingBottom: 100
+                }}
+                style={styles.bodyContainer}
+            >
+                {/* Categories */}
+                <Categories />
+                
+                {/* Featured */}
+                <FeaturedRow 
+                    id='1'
+                    title='Featured'
+                    description='Paid placements from our partners'
+                />
+
+                {/* Tasty Discounts */}
+                <FeaturedRow 
+                    id='2'
+                    title='Tasty Discounts'
+                    description="Everyone's been enjoying these juicy discounts!"
+                />
+
+                {/* Offers near you */}
+                <FeaturedRow 
+                    id='3'
+                    title='Offers near you!'
+                    description='Why not support your local restaurants tonight!'
+                />
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -41,14 +91,27 @@ export default HomeScreen
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        width: '100%',
-        height: '100%'
+        paddingTop: 20
     },
     headerContainer: {
         flexDirection: 'row',
         paddingBottom: 12,
         marginHorizontal: 16,
         alignItems: 'center'
+    },
+    searchBarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 8,
+        paddingBottom: 8,
+        marginHorizontal: 16
+    },
+    searchBar: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: 'rgb(229, 231, 235)',
+        padding: 12,
+        marginHorizontal: 8
     },
     cornerLogo: {
         width: 28,
@@ -57,5 +120,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(209, 213, 219)',
         borderRadius: 999
 
-    }
+    },
+    bodyContainer: {
+        backgroundColor: 'rgb(243, 244, 246)',
+    },
 })
