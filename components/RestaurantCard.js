@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React from 'react'
 import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons'; 
+import { urlFor } from '../sanity';
+
 
 const RestaurantCard = ({
     id,
@@ -17,7 +19,7 @@ const RestaurantCard = ({
     return (
         <TouchableOpacity style={styles.cardContainer}>
             <Image 
-                source={imgUrl}
+                source={{ uri: urlFor(imgUrl).url() }}
                 style={styles.cardImage}
             />
 

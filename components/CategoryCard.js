@@ -5,7 +5,7 @@ const CategoryCard = ({ imgUrl, title }) => {
     return (
         <TouchableOpacity style={{ position: 'relative', marginRight: 8 }}>
             <Image 
-                source={imgUrl}
+                source={{ uri: imgUrl}}
                 style={{
                     height: 80,
                     width: 80,
