@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React from 'react'
 import { FontAwesome, SimpleLineIcons } from '@expo/vector-icons'; 
 import { urlFor } from '../sanity';
+import { useNavigation } from '@react-navigation/native';
 
 
 const RestaurantCard = ({
@@ -16,8 +17,24 @@ const RestaurantCard = ({
     long,
     lat
 }) => {
+    const navigation = useNavigation()
+
     return (
-        <TouchableOpacity style={styles.cardContainer}>
+        <TouchableOpacity 
+            onPress={() => navigation.navigate('Restaurant', {
+                id,
+                imgUrl,
+                title,
+                rating,
+                genre,
+                address,
+                shortDescription,
+                dishes,
+                long,
+                lat
+            })}
+            style={styles.cardContainer}
+        >
             <Image 
                 source={{ uri: urlFor(imgUrl).url() }}
                 style={styles.cardImage}
