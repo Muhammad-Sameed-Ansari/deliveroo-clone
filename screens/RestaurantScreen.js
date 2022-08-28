@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { urlFor } from '../sanity'
 import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons'; 
 import DishRow from '../components/DishRow';
+import BasketPopup from '../components/BasketPopup';
 
 const RestaurantScreen = () => {
     const { params: {
@@ -21,66 +22,70 @@ const RestaurantScreen = () => {
     const navigation = useNavigation()
  
     return (
-        <ScrollView>
-            <View style={styles.headerContainer}>
-                <Image
-                    style={styles.headerImage} 
-                    source={{
-                        uri: urlFor(imgUrl).url()
-                    }}
-                />
-                <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
-                    style={styles.backArrow}
-                >
-                    <AntDesign name="arrowleft" size={20} color="#00CCBB" />
-                </TouchableOpacity>
-            </View>
+        <>
+            <BasketPopup />
 
-            <View style={styles.bodyContainer}>
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.titleText}>{title}</Text>
-                    <View style={styles.ratingLocationContainer}>
-                        <View style={styles.ratingContainer}>
-                            <FontAwesome name="star" size={22} color="rgb(22, 101, 52)" style={{ marginRight: 8 }}/>
-                            <Text style={styles.ratingLocationText}>
-                                <Text style={{ color: 'rgb(22, 101, 52)'}}>{rating}</Text> · {genre}
-                            </Text>
-                        </View>
-
-                        <View style={styles.ratingContainer}>
-                            <Ionicons name="location" size={22} color="gray" style={{ marginRight: 8 }}/>
-                            <Text style={styles.ratingLocationText}>Nearby · {address}</Text>
-                        </View>
-                    </View>
-
-                    <Text style={styles.descriptionText}>{shortDescription}</Text>
+            <ScrollView>
+                <View style={styles.headerContainer}>
+                    <Image
+                        style={styles.headerImage} 
+                        source={{
+                            uri: urlFor(imgUrl).url()
+                        }}
+                    />
+                    <TouchableOpacity 
+                        onPress={() => navigation.goBack()}
+                        style={styles.backArrow}
+                    >
+                        <AntDesign name="arrowleft" size={20} color="#00CCBB" />
+                    </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.allergyConatiner}>
-                    <AntDesign name="questioncircleo" size={22} color="gray" />
-                    <Text style={styles.allergyText}>Have a food allergy?</Text>
-                    <AntDesign name="right" size={22} color="#00CCBB" />
-                </TouchableOpacity>
-            </View>
+                <View style={styles.bodyContainer}>
+                    <View style={styles.detailsContainer}>
+                        <Text style={styles.titleText}>{title}</Text>
+                        <View style={styles.ratingLocationContainer}>
+                            <View style={styles.ratingContainer}>
+                                <FontAwesome name="star" size={22} color="#009C5B" style={{ marginRight: 8 }}/>
+                                <Text style={styles.ratingLocationText}>
+                                    <Text style={{ color: '#009C5B'}}>{rating}</Text> · {genre}
+                                </Text>
+                            </View>
 
-            <View>
-                <Text style={styles.menuText}>Menu</Text>
+                            <View style={styles.ratingContainer}>
+                                <Ionicons name="location" size={22} color="gray" style={{ marginRight: 8 }}/>
+                                <Text style={styles.ratingLocationText}>Nearby · {address}</Text>
+                            </View>
+                        </View>
 
-                {dishes.map((dish) => (
-                    <DishRow 
-                        key={dish._id}
-                        id={dish._id}
-                        name={dish.name}
-                        description={dish.shortDescription}
-                        price={dish.price}
-                        image={dish.image}
-                    />
-                ))}
-                
+                        <Text style={styles.descriptionText}>{shortDescription}</Text>
+                    </View>
 
-            </View>
-        </ScrollView>
+                    <TouchableOpacity style={styles.allergyConatiner}>
+                        <AntDesign name="questioncircleo" size={22} color="gray" />
+                        <Text style={styles.allergyText}>Have a food allergy?</Text>
+                        <AntDesign name="right" size={22} color="#00CCBB" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.dishRow}>
+                    <Text style={styles.menuText}>Menu</Text>
+
+                    {dishes.map((dish) => (
+                        <DishRow 
+                            key={dish._id}
+                            id={dish._id}
+                            name={dish.name}
+                            description={dish.shortDescription}
+                            price={dish.price}
+                            image={dish.image}
+                        />
+                    ))}
+                    
+
+                </View>
+            </ScrollView>
+        </>
     )
 }
 
@@ -155,5 +160,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 20,
         lineHeight: 28
+    },
+    dishRow: {
+        paddingBottom: 144
     }
 })

@@ -1,14 +1,27 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import { urlFor } from '../sanity'
-import { AntDesign } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { addToBasket, removeFromBasket, selectBasketItemsWithId } from '../features/basketSlice';
 
 const DishRow = ({ id, name, description, price, image }) => {
     const [isPressed, setIsPressed] = useState(false)
+    const items = useSelector((state) => selectBasketItemsWithId(state, id))
+    const dispatch = useDispatch()
+
+    const addItemToBasket = () => {
+        dispatch(addToBasket({ id, name, description, price, image }))
+    }
+
+    const removeItemFromBasket = () => {
+        if (!items.length > 0) return
+        dispatch(removeFromBasket({ id }))
+    }
 
     return (
         <>
-            <TouchableOpacity onPress={() => setIsPressed(!isPressed)} style={styles.container}>
+            <TouchableOpacity onPress={() => setIsPressed(!isPressed)} style={styles.container(isPressed)}>
                 <View style={styles.dishContainer}>
                     <View style={styles.textContainer}>
                         <Text style={styles.nameText}>{name}</Text>
@@ -28,14 +41,22 @@ const DishRow = ({ id, name, description, price, image }) => {
             {isPressed && (
                 <View style={styles.counterContainer}>
                     <View style={styles.innerContainer}>
-                        <TouchableOpacity style={{ marginRight: 8 }}>
-                            <AntDesign name="minuscircle" size={40} color="blue" />
+                        <TouchableOpacity 
+                            disabled={!items.length}
+                            onPress={removeItemFromBasket} 
+                            style={{ marginRight: 8 }}
+                        >
+                            <Entypo 
+                                name="circle-with-minus" 
+                                size={40} 
+                                color={items.length > 0 ? "#00CCBB" : 'gray'} 
+                            />
                         </TouchableOpacity>
 
-                        <Text style={{ marginRight: 8 }} >0</Text>
+                        <Text>{items.length}</Text>
 
-                        <TouchableOpacity>
-                            <AntDesign name="pluscircle" size={40} color="bluw" />
+                        <TouchableOpacity onPress={addItemToBasket} style={{ marginLeft: 8 }}>
+                            <Entypo name="circle-with-plus" size={40} color="#00CCBB" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -47,12 +68,12 @@ const DishRow = ({ id, name, description, price, image }) => {
 export default DishRow
 
 const styles = StyleSheet.create({
-    container: {
+    container: (isPressed) => ({
         backgroundColor: 'white',
-        borderWidth: 1,
+        borderWidth: isPressed ? 0 : 1,
         padding: 16,
         borderColor: 'rgb(229, 231, 235)'
-    },
+    }),
     nameText: {
         fontSize: 18,
         lineHeight: 28,
